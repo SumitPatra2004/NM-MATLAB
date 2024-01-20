@@ -1,0 +1,242 @@
+Function file Bisection:
+
+function [x1, err, fx1, k]=bisect (f,a,b, delta)
+fa=feval (f,a);
+fb=feval (f,b);
+if fa*fb>0
+error('choose a and b correctly');
+end
+N=1+round((log (b-a)-log (delta))/log (2));
+for k=1:N
+x1=(a+b)/2; fx1=feval(f, x1);
+if fx1==0
+a=xl;
+b=x1;
+elseif fa*fx1>0 a=x1;
+fa=fx1;
+else
+b=x1;
+fb=fx1;
+end
+if (b-a)‹delta break;
+end
+end
+x1=(a+b)/2; err=abs(b-a);
+fx1=feval(f, ×1);
+
+Main file:
+
+cIc;
+clear all;
+close all;
+tic f=inline('x.^2-9');
+a=2;
+b=3;
+delta=10^(-7);
+%delta=0
+[c, err, yc, k]=bisect(f, a,b, delta);
+toc
+disp('------------------------------')
+disp(['Root=',num2str(c)]);
+disp(['Iteration No.=',num2str (k)]) ;
+disp(['Error=',num2str(err)]);
+disp(['fuction value=' ,num2str (yc)]);
+disp"-------------------------------');
+
+
+REGULAFALSI
+
+Function file:
+
+function[x1,err, fx1,k]=regulafalsi(f,a,b,delta)
+fa=feval(f,a);
+fb=feval(f,b);
+if fa*fb>o
+error('choose a and b correctly');
+end
+for k=1:50
+Xl=(a*fb-b*fa)/(fb-fa);
+fx1=feval(f,x1);
+if fx1==0
+a=xl;
+b=Xl;
+elseif fa*fx1>0
+a=Xl;
+fa=fx1;
+else
+b=x1;
+fb=fx1;
+end
+if abs(b-a)‹delta
+break;
+end
+end
+xl=(a*fb-b*fa)/(fb-fa);
+err=abs(x1-a);
+
+Main file:
+
+clc;
+clear all;
+close all;
+f=inline('x.^5-x-1');
+a=-1;
+b=3;
+delta=10^(-7);
+tic
+[c,err,yc,k]=regulafalsi(f,a,b,delta);
+toc
+disp"------------------------------');
+disp(['Root=',num2str(c)]);
+disp(['Iteration NO=',num2str (k)]);
+disp(['Error=',num2str(err)]);
+disp(['fuction value=' ,num2str (yc)]);
+disp"-------------------------------');
+
+
+
+
+
+NEWTON
+
+Function file:
+
+function [x1, err, fx1,k]=newton(f, df, a, delta, eps)
+fa=feval (f,a);
+dfa=feval(df,a);
+if abs(dfa)<delta
+error ('too small slope")
+end
+for k=1:50
+xl=a-(fa/dfa);
+fx1=feval(df,×1);
+dfx1=feval(df, ×1);
+if abs ((X1-a)/X1)‹eps||abs(x1-a)‹delta
+break;
+else
+a=x1;
+fa=fx1;
+dfa=dfx1;
+end
+end
+x1=a-(fa/dfa);
+err=abs(x1-a);
+fx1=feval(df, ×1);
+end
+
+Main file:
+
+f=inline(' (x-1)^5'); df=inline('5* (x-1)^4'); a=-1;
+delta= 10^(-10); eps= 10^(-10);
+tic
+[c, err, yc,k]=newton(f, df, a, delta, eps);
+toc
+disp('- - - - - - - - - - - -');
+disp(['Root=', numzstr(c)]);
+disp(['Iteration NO=',num2str (k)]);
+disp(['Error=',num2str(err)]);
+disp(['fuction value=' ,num2str (yc)]);
+disp('- - - - - - - - - - - -');
+
+
+SECANT
+
+Function file:
+
+function [x1, err, fx1, k]=secant(f, a,b, delta)
+fa=feval (f, a);
+fb=feval (f,b);
+for k=1:50
+xl=b-(fb*(a-b))/(fa-fb);
+fx1=feval (f, x1) ;
+if fx1==0
+a=x1;
+bex1;
+elseif abs (b-a)›delta
+a=b;
+b=x1;
+fa=fb;
+fb=fx1;
+else
+break;
+end
+end
+x1=b-(fb*(a-b))/(fa-fb);
+err=abs (b-a);
+fx1=feval(f,×1);
+
+Main file:
+
+clc;
+clear all;
+close all;
+f=inline('2*cos (3*×)-exp(x)');
+a=-1;
+b=2;
+delta=10^(-10);
+tic
+[c,err,yc, k]=secant(f,a,b, delta);
+toc
+disp('- - - - - - - - - - - -');
+disp(['Root=' ,num2str (c)]).
+disp(r 'Iteration No=' ,num2str (k)]);
+disp(['Error=' ,num2str(err)]);
+disp(['function value=' ,num2str (yc)]);
+disp('- - - - - - - - - - - -');
+
+
+GRAPH PLOT
+
+clc;
+clear all;
+close all;
+
+×= linspace(-5,5);
+f1 = x.^2-9;
+
+x1= linspace(-2,2);
+f2= x1.^5-x1-1;
+
+X2= linspace(-2,2);
+f3=x2.*exp(-x2);
+
+X3= linspace (-6,6);
+f4=2*cos(3*×3)-exp(x3);
+
+x4=linspace (-3,3);
+f5=(x4-1).^5;
+
+subplot(2,3,1)
+plot (x, f1)
+ax = gca;
+ax.XAxisLocation='origin';
+ax.YAxisLocation='origin';
+title('f(x)=×^2-9');
+
+subplot(2,3,2)
+plot (x1, f2)
+axl=gca;
+ax1.XAxisLocation='origin';
+ax1. YAxisLocation='origin';
+title('f(x)= (×^5)-x-1');
+
+subplot(2,3,3)
+plot (x2, f3)
+ax2=gca;
+ax2.XAxisLocation='origin';
+ax2.YAxisLocation='origin';
+title('f(x)=x2*exp(-x2)');
+
+subplot(2,3,4)
+plot (x3, f4)
+ax3=gca;
+ax3.XAxisLocation='origin';
+ax3.YAxisLocation='origin';
+title('f(x)=2cos(3x)-e^x');
+
+subplot(2,3,5)
+plot (x4, f5)
+ax4=gca;
+ax4.XAxisLocation='origin';
+ax4.YAxisLocation='origin';
+title('f(x)= (x-1)15');
